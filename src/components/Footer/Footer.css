@@ -1,0 +1,20 @@
+.footer {
+  width: 800px;
+  height: 40px;
+  border-radius: 5px;
+  margin-left: 8px;
+  display: flex;
+}
+
+.input-bar {
+  width: 700px;
+  height: 30px;
+  background-color: black;
+  font:
+    16px Arial,
+    sans-serif;
+  color: white;
+  padding: 5px;
+  border: 1px solid grey;
+  border-radius: 5px;
+}

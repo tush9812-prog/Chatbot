@@ -1,0 +1,15 @@
+.default-chat {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.button {
+  border: solid blue 1px;
+  font-weight: bold;
+  font-style: italic;
+  border-radius: 20px;
+  padding: 10px;
+}
