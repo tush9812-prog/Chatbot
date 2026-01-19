@@ -35,7 +35,7 @@ function App() {
           <div className="chats">
             {" "}
             {messages.length === 0 ? (
-              <DefaultChat />
+              <DefaultChat messages={messages} setMessages={setMessages} />
             ) : (
               <Chat messages={messages} onMessageUpdate={handleMessageUpdate} />
             )}
