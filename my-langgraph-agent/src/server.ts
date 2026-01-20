@@ -34,7 +34,7 @@ function toLangChainMessage(m: ClientMsg) {
 
 app.post("/api/chat", async (req, res) => {
   try {
-    console.log("Received request at /api/chat", req.body);
+    // console.log("Received request at /api/chat", req.body);
     const { messages, thread_id = "default" } = req.body;
     res.setHeader("Content-Type", "text/event-stream");
     res.setHeader("Cache-Control", "no-cache");
@@ -49,15 +49,22 @@ app.post("/api/chat", async (req, res) => {
           thread_id: thread_id,
           userId: "user_1",
           model: "openai/gpt-4.1-nano", // Add this
-          systemPrompt: `You are a helpful assistant with access to memory storage`, // Add this
+          systemPrompt: `You are a helpful assistant`, // Add this
         },
         streamMode: "messages",
       },
     );
 
     for await (const chunk of stream) {
-      console.log("Sending chunk:", chunk);
-      res.write(`data: ${JSON.stringify(chunk)}\n\n`);
+      // ✅ Extract the content from the chunk
+      const messageChunk = chunk[0]; // AIMessageChunk is first element
+      const content = messageChunk.content;
+
+      // Only send if there's actual content
+      if (content) {
+        // console.log("Sending token:", content);
+        res.write(`data: ${JSON.stringify({ token: content })}\n\n`);
+      }
     }
 
     res.write("data: [DONE]\n\n");
@@ -70,5 +77,5 @@ app.post("/api/chat", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on ${PORT}`);
 });
