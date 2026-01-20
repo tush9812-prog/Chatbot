@@ -4,6 +4,7 @@ import {
   START,
   StateGraph,
   END,
+  InMemoryStore,
 } from "@langchain/langgraph";
 import { BaseMessage, AIMessage } from "@langchain/core/messages";
 import { initChatModel } from "langchain/chat_models/universal";
@@ -14,7 +15,7 @@ import {
 } from "./configuration.js";
 import { GraphAnnotation } from "./state.js";
 import { getStoreFromConfigOrThrow, splitModelAndProvider } from "./utils.js";
-
+import { MemorySaver } from "@langchain/langgraph";
 const llm = await initChatModel();
 
 async function callModel(
@@ -100,5 +101,8 @@ export const builder = new StateGraph(
   })
   .addEdge("store_memory", "call_model");
 
-export const graph = builder.compile();
+export const graph = builder.compile({
+  checkpointer: new MemorySaver(),
+  store: new InMemoryStore(), // Add the store here
+});
 graph.name = "MemoryAgent";
