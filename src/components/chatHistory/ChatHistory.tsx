@@ -34,41 +34,42 @@ export const ChatHistory = ({ loader, setLoader, messages, setMessages }) => {
   if (messages.length > 0) {
     return (
       <div className="sidebar">
-        <ScrollArea className="h-full w-full rounded-md border p-4">
+        <ScrollArea className="h-full w-20 rounded-md border p-4">
           <Component messages={messages}></Component>
         </ScrollArea>
       </div>
     );
   }
-  return (
-    <ScrollArea className="h-full w-full rounded-md border p-4">
-      <Sidebar aria-label="Default sidebar example">
-        <SidebarItems>
-          <SidebarItemGroup>
-            <SidebarItem href="#">
-              <div className="h-full default-container">
-                <h1>Quote of the Day</h1>
-              </div>
-            </SidebarItem>
-          </SidebarItemGroup>
-        </SidebarItems>
-      </Sidebar>
-    </ScrollArea>
-  );
+  // return (
+  //   <ScrollArea className="h-full w-0 rounded-md border p-4">
+  //     <Sidebar aria-label="Default sidebar example">
+  //       <SidebarItems>
+  //         <SidebarItemGroup>
+  //           <SidebarItem href="#">
+  //             <div className="h-full default-container">
+  //               <h1>Quote of the Day</h1>
+  //             </div>
+  //           </SidebarItem>
+  //         </SidebarItemGroup>
+  //       </SidebarItems>
+  //     </Sidebar>
+  //   </ScrollArea>
+  // );
 };
 
 export function Component({ messages }) {
   return (
-    <Sidebar aria-label="Default sidebar example">
-      <SidebarItems>
-        <SidebarItemGroup>
+    <Sidebar aria-label="Default sidebar example" className="w-20">
+      <SidebarItems className="m-2">
+        <SidebarItemGroup className="m-2">
           {messages.length > 0 &&
             messages.map((item, index) =>
               item.role === "User" ? (
-                <SidebarItem href="#">
+                <SidebarItem href="#" className="m-2">
                   <li key={index}>
                     <div className="prompt">
-                      {index + 1} {item.prompt}
+                      {item.prompt}
+                      {/* {index + 1} {item.prompt} */}
                     </div>
                   </li>
                 </SidebarItem>
