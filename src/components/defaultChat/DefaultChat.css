@@ -1,10 +1,10 @@
 .default-chat {
   display: flex;
+  flex: wrap;
   gap: 10px;
   justify-content: center;
   align-items: center;
   height: 100%;
-  flex: wrap;
 }
 
 .button {

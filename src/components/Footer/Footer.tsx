@@ -11,7 +11,7 @@ import type { CustomMessage } from "../../types/types";
 export function InputGroupIcon({ value, onChange }) {
   return (
     // <div className={`grid max-w-sm gap-6 ${className}`} ref={ref}>
-    <div className={` w-[420px] max-w-sm gap-6 text-white`}>
+    <div className={`w-full max-w-sm gap-6 text-white input`}>
       <InputGroup>
         <InputGroupInput
           value={value}

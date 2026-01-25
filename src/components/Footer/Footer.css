@@ -17,3 +17,7 @@
   border: 1px solid grey;
   border-radius: 5px;
 }
+
+.input {
+  width: calc(100% - 80px);
+}

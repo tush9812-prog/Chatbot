@@ -12,7 +12,13 @@
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 
   /* Animated gradient */
-  background: linear-gradient(-45deg, #262629ff, #16213e, #031e2db4, #47474bff);
+  background: linear-gradient(
+    -45deg,
+    rgb(114, 200, 207),
+    #1d2230,
+    #031e2db4,
+    #47474bff
+  );
   background-size: 400% 400%;
   animation: gradientShift 8s ease infinite;
 }
