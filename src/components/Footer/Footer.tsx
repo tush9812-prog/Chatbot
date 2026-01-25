@@ -31,14 +31,17 @@ export function ButtonOutline() {
 function Footer({ loader, setLoader, messages, setMessages }) {
   const [value, setValue] = useState("");
 
-  const onClick = async () => {
-    const requestId: string = crypto.randomUUID();
+  const handleSubmit = async (e) => {
+    // Prevent the page from refreshing on submit
+    if (e) e.preventDefault();
 
-    if (!value) {
-      console.error("Input ref is not attached to the DOM element.");
+    if (!value.trim()) {
+      console.error("Input is empty.");
       return;
     }
-    const userMessage: CustomMessage = {
+
+    const requestId = crypto.randomUUID();
+    const userMessage = {
       id: crypto.randomUUID(),
       role: "User",
       prompt: value,
@@ -46,24 +49,22 @@ function Footer({ loader, setLoader, messages, setMessages }) {
       response: undefined,
       timestamp: Date.now(),
     };
-    // setMessages((prevMessages: CustomMessage[]) => [
-    //   ...prevMessages,
-    //   userMessage,
-    // ]);
-    setMessages((prevMessages: CustomMessage[]) => [
-      ...prevMessages,
-      userMessage,
-    ]);
+
+    setMessages((prevMessages) => [...prevMessages, userMessage]);
     setValue("");
   };
 
   return (
-    <div className="footer flex items-center gap-2">
+    /* Wrap in a form to catch the Enter key automatically */
+    <form className="footer flex items-center gap-2" onSubmit={handleSubmit}>
       <InputGroupIcon value={value} onChange={setValue} />
-      <Button variant="outline" onClick={onClick}>
+
+      {/* Ensure type="submit" so it triggers the form onSubmit */}
+      <Button variant="outline" type="submit">
         Click me
       </Button>
-    </div>
+    </form>
   );
 }
+
 export default Footer;

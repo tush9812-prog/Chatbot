@@ -64,14 +64,8 @@
   justify-content: center;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   .sidebar {
     display: none;
-  }
-}
-
-@media (max-width: 1000px) {
-  .chats {
-    width: 488px;
   }
 }
