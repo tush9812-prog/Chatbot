@@ -19,7 +19,7 @@ export const DefaultChat = ({ messages, setMessages }) => {
   };
 
   return (
-    <div className="text-center text-gray-400 py-8 default-chat">
+    <div className="text-center text-gray-400 default-chat">
       <button
         className="button default-weather"
         onClick={() => click({ action: "Weather" })}

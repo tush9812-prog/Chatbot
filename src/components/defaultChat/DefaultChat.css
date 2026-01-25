@@ -1,10 +1,17 @@
 .default-chat {
   display: flex;
-  flex: wrap;
-  gap: 10px;
-  justify-content: center;
-  align-items: center;
+  flex-wrap: wrap;
+  /* Keep the container full height to allow centering on screen */
   height: 100%;
+  width: 100%;
+
+  /* This centers the group of buttons horizontally and vertically */
+  justify-content: center;
+  align-content: center; /* Important: aligns the rows together when wrapped */
+  align-items: center;
+
+  /* Control the exact spacing here */
+  gap: 8px;
 }
 
 .button {
@@ -12,11 +19,19 @@
   font-weight: bold;
   font-style: italic;
   border-radius: 20px;
-  padding: 10px;
+  padding: 8px 16px;
+  /* Prevent buttons from growing to fill height */
+  height: fit-content;
 }
 
-@media (max-width: 220px) {
+@media (max-width: 428px) {
   .default-chat {
-    display: none;
+    /* Use even smaller gap for small screens */
+    gap: 6px;
+  }
+
+  .button {
+    padding: 6px 12px;
+    font-size: 14px;
   }
 }
