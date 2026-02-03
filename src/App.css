@@ -24,6 +24,7 @@
   flex-direction: row;
   gap: 20px;
   padding: 20px;
+  overflow: hidden;
 }
 .app-text {
   display: flex;
@@ -40,7 +41,11 @@
 }
 
 .sidebar {
-  height: auto;
+  height: 100%;
+  min-height: 0; /* important for flex children scroll to work [web:152] */
+  overflow: hidden; /* so only the inner list scrolls */
+  display: flex;
+  flex-direction: column;
   flex-shrink: 0;
   padding: 4px;
   border: white;
@@ -54,6 +59,13 @@
   width: calc(100% - 200px);
 }
 
+.chat-history {
+  flex: 1;
+  min-height: 0; /* important [web:152] */
+  display: flex;
+  flex-direction: column;
+}
+
 .footers {
   width: 100%;
   position: fixed;
@@ -65,10 +77,7 @@
 }
 
 @media (max-width: 800px) {
-  .sidebar {
-    display: none;
-  }
   .chats {
-    width: calc(100% - 80px);
+    width: calc(100% - 180px);
   }
 }

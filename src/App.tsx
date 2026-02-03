@@ -6,51 +6,38 @@ import Footer from "./components/Footer/Footer.tsx";
 import { Chat } from "./components/chat/Chat.tsx";
 import type { CustomMessage } from "./types/types.ts";
 import { DefaultChat } from "./components/defaultChat/DefaultChat.tsx";
+import { Outlet } from "react-router-dom";
+import { ChatAppProvider } from "./chat/ChatAppContext.tsx";
 function App() {
   const [loader, setLoader] = useState(true);
-  const [messages, setMessages] = useState<CustomMessage[]>([]);
-  const handleMessageUpdate = useCallback((id: string, response: string) => {
-    setMessages((prev) => {
-      const updated = prev.map((msg) =>
-        msg.id === id ? { ...msg, response: response } : msg,
-      );
-
-      return updated;
-    });
-  }, []);
+  const [conversations, setConversations] = useState<
+    Record<string, CustomMessage[]>
+  >({});
   return (
-    <div className="app">
-      {/* <img src={Background} className="img-background" /> */}
-      <div className="app-body">
-        <div className="sidebar">
-          <ChatHistory
-            loader={loader}
-            setLoader={setLoader}
-            messages={messages}
-            setMessages={setMessages}
-          />
-        </div>
-
-        <div className="app-text">
-          <div className="chats">
-            {" "}
-            {messages.length === 0 ? (
-              <DefaultChat messages={messages} setMessages={setMessages} />
-            ) : (
-              <Chat messages={messages} onMessageUpdate={handleMessageUpdate} />
-            )}
-          </div>
-          <div className="footers">
-            <Footer
+    <ChatAppProvider value={{ conversations, setConversations }}>
+      <div className="app">
+        {/* <img src={Background} className="img-background" /> */}
+        <div className="app-body">
+          <div className="sidebar">
+            <ChatHistory
               loader={loader}
               setLoader={setLoader}
-              messages={messages}
-              setMessages={setMessages}
+              conversations={conversations}
+              setConversations={setConversations}
             />
+          </div>
+
+          <div className="app-text">
+            <div className="chats">
+              <Outlet context={{ conversations, setConversations }} />
+            </div>
+            <div className="footers">
+              <Footer loader={loader} setLoader={setLoader} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </ChatAppProvider>
   );
 }
 

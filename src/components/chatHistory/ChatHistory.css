@@ -11,7 +11,6 @@
 /* Override sidebar base styles */
 [data-slot="sidebar-wrapper"] .sidebar {
   width: 180px;
-  height: 520px;
   border: solid 1px hsl(var(--sidebar-border));
   z-index: 1;
   padding: 8px;
@@ -61,7 +60,7 @@
   margin: 8px;
   border: 1px solid hsl(var(--sidebar-border));
   border-radius: 8px;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(234, 227, 227, 0.2);
   word-wrap: break-word; /* ✅ Break long words */
   overflow-wrap: break-word; /* ✅ Modern alternative */
   white-space: pre-wrap;
@@ -81,7 +80,72 @@
   background: hsl(var(--sidebar-accent) / 0.5);
   padding-left: 16px;
 }
+/* Flowbite sidebar + inner wrappers */
+.sidebar-component,
+.sidebar-component aside,
+.sidebar-component [data-testid="flowbite-sidebar"],
+.sidebar-component > div,
+.sidebar-component .flowbite-sidebar,
+.sidebar-component .flowbite-sidebar > div,
+.sidebar-component ul,
+.sidebar-component li {
+  background: transparent !important;
+  overflow-y: auto;
+  padding-right: 10px;
+}
 
-.default-sidebar {
-  height: 200px;
+.chat-history {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  top: 4px;
+  width: 100%;
+}
+
+.sidebar-component {
+  height: calc(100% - 160px);
+  position: relative;
+  left: 8px;
+  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+}
+
+/* Base (Chrome/Edge/Safari) */
+.sidebar-component::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-component::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar-component::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  border: 2px solid transparent; /* keeps your “spacing” look */
+  background-clip: content-box;
+}
+
+/* Disable hover/active highlight by keeping same color */
+.sidebar-component::-webkit-scrollbar-thumb:hover,
+.sidebar-component::-webkit-scrollbar-thumb:active {
+  background-color: rgba(255, 255, 255, 0.35);
+}
+
+.new-page-button {
+  position: absolute;
+  left: -8px;
+}
+
+@media (max-height: 800px) {
+  .sidebar-component {
+    height: calc(100vh - 180px) !important;
+  }
+
+  /* Target the internal wrapper to restore scrolling */
+  .sidebar-component > div {
+    height: 100% !important;
+    overflow-y: auto !important;
+    display: flex;
+    flex-direction: column;
+  }
 }

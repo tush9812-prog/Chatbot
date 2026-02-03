@@ -1,0 +1,13 @@
+.not-found-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  text-align: center;
+  margin-top: 50px;
+}
+
+.not-found-body-redirect {
+  border: silver 2px solid;
+}

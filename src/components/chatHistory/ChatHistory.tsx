@@ -1,82 +1,71 @@
+// ChatHistory.tsx
 import "./ChatHistory.css";
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
-
-import {
-  // Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { SidebarProvider } from "../ui/sidebar";
-import { useEffect, useState } from "react";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sidebar,
   SidebarItem,
   SidebarItemGroup,
   SidebarItems,
 } from "flowbite-react";
-import {
-  HiArrowSmRight,
-  HiChartPie,
-  HiInbox,
-  HiShoppingBag,
-  HiTable,
-  HiUser,
-  HiViewBoards,
-} from "react-icons/hi";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import { useNavigate, useParams } from "react-router-dom";
+import type { CustomMessage } from "../../types/types";
 
-export const ChatHistory = ({ loader, setLoader, messages, setMessages }) => {
-  if (messages.length > 0) {
-    return (
-      <div className="sidebar">
-        <ScrollArea className="h-full w-20 rounded-md border p-4">
-          <Component messages={messages}></Component>
-        </ScrollArea>
-      </div>
-    );
-  }
-  // return (
-  //   <ScrollArea className="h-full w-0 rounded-md border p-4">
-  //     <Sidebar aria-label="Default sidebar example">
-  //       <SidebarItems>
-  //         <SidebarItemGroup>
-  //           <SidebarItem href="#">
-  //             <div className="h-full default-container">
-  //               <h1>Quote of the Day</h1>
-  //             </div>
-  //           </SidebarItem>
-  //         </SidebarItemGroup>
-  //       </SidebarItems>
-  //     </Sidebar>
-  //   </ScrollArea>
-  // );
-};
+export const ChatHistory = ({
+  loader,
+  setLoader,
+  conversations,
+  setConversations,
+}) => {
+  const navigate = useNavigate();
+  const { chatId } = useParams();
 
-export function Component({ messages }) {
+  const chatIds = Object.keys(conversations);
+
+  const onNewPage = () => {
+    const id = crypto.randomUUID();
+    setConversations((prev) => ({ ...prev, [id]: [] }));
+    navigate(`/c/${id}`); // programmatic navigation from button click [web:22]
+  };
+
   return (
-    <Sidebar aria-label="Default sidebar example" className="w-20">
-      <SidebarItems className="m-2">
-        <SidebarItemGroup className="m-2">
-          {messages.length > 0 &&
-            messages.map((item, index) =>
-              item.role === "User" ? (
-                <SidebarItem href="#" className="m-2">
-                  <li key={index}>
-                    <div className="prompt">
-                      {item.prompt}
-                      {/* {index + 1} {item.prompt} */}
-                    </div>
-                  </li>
+    <div className="chat-history">
+      <Stack direction="row" spacing={2}>
+        <Button
+          variant="contained"
+          className="new-page-button"
+          onClick={onNewPage}
+        >
+          New Page
+        </Button>
+      </Stack>
+
+      <Sidebar aria-label="Chats" className="w-28 sidebar-component">
+        <SidebarItems className="m-2">
+          <SidebarItemGroup className="m-2">
+            {chatIds.map((id) => {
+              const firstUserPrompt =
+                (conversations[id] ?? []).find(
+                  (m: CustomMessage) => m.role === "User",
+                )?.prompt ?? "New chat";
+
+              return (
+                <SidebarItem
+                  key={id}
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate(`/c/${id}`);
+                  }}
+                  className={`m-2 ${chatId === id ? "active-chat" : ""}`}
+                >
+                  <div className="prompt">{firstUserPrompt}</div>
                 </SidebarItem>
-              ) : null,
-            )}
-        </SidebarItemGroup>
-      </SidebarItems>
-    </Sidebar>
+              );
+            })}
+          </SidebarItemGroup>
+        </SidebarItems>
+      </Sidebar>
+    </div>
   );
-}
+};

@@ -1,21 +1,31 @@
 import type { CustomMessage } from "@/types/types";
 import "./DefaultChat.css";
+import { useNavigate, useParams } from "react-router-dom";
+import { useChatContext } from "../../routes/useChatContex.ts";
+import { useChatApp } from "@/chat/ChatAppContext.tsx";
 
-export const DefaultChat = ({ messages, setMessages }) => {
+export const DefaultChat = () => {
+  const navigate = useNavigate(); // programmatic navigation [web:28]
+  const { chatId } = useParams(); // may be undefined on "/" [web:28]
+  const { setConversations } = useChatApp();
+
   const click = ({ action }) => {
-    const requestId: string = crypto.randomUUID();
+    const id = chatId ?? crypto.randomUUID();
+
     const userMessage: CustomMessage = {
       id: crypto.randomUUID(),
       role: "User",
       prompt: `${action}`,
-      requestId: requestId,
+      requestId: crypto.randomUUID(),
       response: undefined,
       timestamp: Date.now(),
     };
-    setMessages((prevMessages: CustomMessage[]) => [
-      ...prevMessages,
-      userMessage,
-    ]);
+
+    setConversations((prev) => {
+      const current = prev[id] ?? [];
+      return { ...prev, [id]: [...current, userMessage] };
+    });
+    if (!chatId) navigate(`/c/${id}`);
   };
 
   return (
@@ -24,10 +34,6 @@ export const DefaultChat = ({ messages, setMessages }) => {
         className="button default-weather"
         onClick={() => click({ action: "Weather" })}
       >
-        {/* <img
-                src={WeatherButton}
-                style={{ width: "28px", height: "28px", objectFit: "contain" }}
-              /> */}
         Weather
       </button>
       <button

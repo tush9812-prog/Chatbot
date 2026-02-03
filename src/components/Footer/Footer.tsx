@@ -7,10 +7,12 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
+import { useParams } from "react-router-dom";
+import { useChatApp } from "../../chat/ChatAppContext";
 import type { CustomMessage } from "../../types/types";
+
 export function InputGroupIcon({ value, onChange }) {
   return (
-    // <div className={`grid max-w-sm gap-6 ${className}`} ref={ref}>
     <div className={`w-full max-w-sm gap-6 text-white input`}>
       <InputGroup>
         <InputGroupInput
@@ -25,46 +27,40 @@ export function InputGroupIcon({ value, onChange }) {
     </div>
   );
 }
-export function ButtonOutline() {
-  return <Button variant="outline">Outline</Button>;
-}
-function Footer({ loader, setLoader, messages, setMessages }) {
+
+function Footer({ loader, setLoader }) {
   const [value, setValue] = useState("");
+  const { chatId } = useParams();
+  const { setConversations } = useChatApp();
 
-  const handleSubmit = async (e) => {
-    // Prevent the page from refreshing on submit
-    if (e) e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!value.trim() || !chatId) return;
 
-    if (!value.trim()) {
-      console.error("Input is empty.");
-      return;
-    }
-
-    const requestId = crypto.randomUUID();
-    const userMessage = {
+    const userMessage: CustomMessage = {
       id: crypto.randomUUID(),
       role: "User",
       prompt: value,
-      requestId: requestId,
+      requestId: crypto.randomUUID(),
       response: undefined,
       timestamp: Date.now(),
     };
 
-    setMessages((prevMessages) => [...prevMessages, userMessage]);
+    setConversations((prev) => {
+      const current = prev[chatId] ?? [];
+      return { ...prev, [chatId]: [...current, userMessage] };
+    });
+
     setValue("");
   };
-
   return (
-    /* Wrap in a form to catch the Enter key automatically */
     <form className="footer flex items-center gap-2" onSubmit={handleSubmit}>
       <InputGroupIcon value={value} onChange={setValue} />
-
-      {/* Ensure type="submit" so it triggers the form onSubmit */}
       <Button variant="outline" type="submit">
         Click me
       </Button>
     </form>
   );
+  // render ...
 }
-
 export default Footer;
