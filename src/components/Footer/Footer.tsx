@@ -7,7 +7,7 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useChatApp } from "../../chat/ChatAppContext";
 import type { CustomMessage } from "../../types/types";
 
@@ -30,12 +30,13 @@ export function InputGroupIcon({ value, onChange }) {
 
 function Footer({ loader, setLoader }) {
   const [value, setValue] = useState("");
-  const { chatId } = useParams();
+  let { chatId } = useParams();
   const { setConversations } = useChatApp();
-
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!value.trim() || !chatId) return;
+    if (!value.trim()) return;
+    const id = chatId ?? crypto.randomUUID();
 
     const userMessage: CustomMessage = {
       id: crypto.randomUUID(),
@@ -45,12 +46,14 @@ function Footer({ loader, setLoader }) {
       response: undefined,
       timestamp: Date.now(),
     };
-
+    console.log("userMessage", userMessage);
     setConversations((prev) => {
-      const current = prev[chatId] ?? [];
-      return { ...prev, [chatId]: [...current, userMessage] };
+      const current = prev[id] ?? [];
+      return { ...prev, [id]: [...current, userMessage] };
     });
-
+    if (!chatId) {
+      navigate(`/c/${id}`);
+    }
     setValue("");
   };
   return (
