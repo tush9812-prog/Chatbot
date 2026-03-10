@@ -109,11 +109,12 @@
   position: relative;
   left: 8px;
   scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+  scrollbar-gutter: stable;
 }
 
 /* Base (Chrome/Edge/Safari) */
 .sidebar-component::-webkit-scrollbar {
-  width: 4px;
+  width: 0.1px;
 }
 .sidebar-component::-webkit-scrollbar-track {
   background: transparent;
@@ -124,11 +125,15 @@
   border: 2px solid transparent; /* keeps your “spacing” look */
   background-clip: content-box;
 }
+.sidebar-component:hover::-webkit-scrollbar {
+  width: 0.1px;
+}
 
 /* Disable hover/active highlight by keeping same color */
 .sidebar-component::-webkit-scrollbar-thumb:hover,
 .sidebar-component::-webkit-scrollbar-thumb:active {
   background-color: rgba(255, 255, 255, 0.35);
+  background-clip: content-box;
 }
 
 .new-page-button {

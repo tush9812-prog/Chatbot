@@ -7,7 +7,6 @@ export type ChatCtx = {
     React.SetStateAction<Record<string, CustomMessage[]>>
   >;
 };
-
 export function useChatContext() {
   return useOutletContext<ChatCtx>();
 }
